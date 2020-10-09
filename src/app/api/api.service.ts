@@ -4,8 +4,6 @@ import { environment } from '../../environments/environment';
 import { map } from 'rxjs/operators';
 
 const API_HOST = environment.apiHost;
-const API_USER = environment.apiUser;
-const API_FEED = environment.apiFeed;
 
 @Injectable({
   providedIn: 'root'
@@ -35,16 +33,7 @@ export class ApiService {
   }
 
   get(endpoint): Promise<any> {
-    let url;
-    if(endpoint.indexOf('users') > 0){
-      url = `${API_USER}${endpoint}`;
-    }
-    else if(endpoint.indexOf('feed') > 0){
-      url = `${API_FEED}${endpoint}`;
-    }
-    else {
-      url = `${API_HOST}${endpoint}`;
-    }
+    const url = `${API_HOST}${endpoint}`;
     const req = this.http.get(url, this.httpOptions).pipe(map(ApiService.extractData));
 
     return req
@@ -56,16 +45,7 @@ export class ApiService {
   }
 
   post(endpoint, data): Promise<any> {
-    let url;
-    if(endpoint.indexOf('users') > 0){
-      url = `${API_USER}${endpoint}`;
-    }
-    else if(endpoint.indexOf('feed') > 0){
-      url = `${API_FEED}${endpoint}`;
-    }
-    else {
-      url = `${API_HOST}${endpoint}`;
-    }
+    const url = `${API_HOST}${endpoint}`;
     return this.http.post<HttpEvent<any>>(url, data, this.httpOptions)
             .toPromise()
             .catch((e) => {
